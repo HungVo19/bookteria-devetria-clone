@@ -1,5 +1,7 @@
 package com.devteria.identity.service;
 
+import com.devteria.identity.mapper.ProfileMapper;
+import com.devteria.identity.repository.httpclient.ProfileClient;
 import java.util.HashSet;
 import java.util.List;
 
@@ -34,6 +36,8 @@ public class UserService {
     RoleRepository roleRepository;
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
+    ProfileClient profileClient;
+    private final ProfileMapper profileMapper;
 
     public UserResponse createUser(UserCreationRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) throw new AppException(ErrorCode.USER_EXISTED);
@@ -45,8 +49,13 @@ public class UserService {
         roleRepository.findById(PredefinedRole.USER_ROLE).ifPresent(roles::add);
 
         user.setRoles(roles);
+        user = userRepository.save(user);
 
-        return userMapper.toUserResponse(userRepository.save(user));
+        var profileRequest = profileMapper.toProfileCreationRequest(user);
+        profileRequest.setUserId(user.getId());
+        profileClient.createProfile(profileRequest);
+
+        return userMapper.toUserResponse(user);
     }
 
     public UserResponse getMyInfo() {
