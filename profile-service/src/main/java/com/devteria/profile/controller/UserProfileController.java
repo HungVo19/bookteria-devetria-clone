@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -21,9 +23,14 @@ public class UserProfileController {
 
   UserProfileService userProfileService;
 
-  @PostMapping("/")
-  UserProfileResponse createProfile(@RequestBody ProfileCreationRequest request) {
-    return userProfileService.createProfile(request);
+//  @PostMapping("/")
+//  UserProfileResponse createProfile(@RequestBody ProfileCreationRequest request) {
+//    return userProfileService.createProfile(request);
+//  }
+
+  @GetMapping
+  List<UserProfileResponse> getAllUserProfiles() {
+    return userProfileService.getAllUserProfiles();
   }
 
   @GetMapping("/{profileId}")

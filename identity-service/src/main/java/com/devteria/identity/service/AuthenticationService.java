@@ -49,13 +49,13 @@ public class AuthenticationService {
     @Value("${jwt.signerKey}")
     protected String signerKey;
 
-    public IntrospectResponse introspect(IntrospectRequest request) throws JOSEException, ParseException {
+    public IntrospectResponse introspect(IntrospectRequest request) {
         var token = request.getToken();
         boolean isValid = true;
 
         try {
             verifyToken(token);
-        } catch (AppException e) {
+        } catch (AppException | JOSEException | ParseException e) {
             isValid = false;
         }
 
