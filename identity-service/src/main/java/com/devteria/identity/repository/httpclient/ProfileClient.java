@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 //Either name or value is required for service registry like Eureka
-@FeignClient(value = "profile-service", url = "${app.service.profile.url")
+@FeignClient(value = "profile-service", url = "${app.service.profile.url}")
 public interface ProfileClient {
 
   @PostMapping(value = "/users/")
