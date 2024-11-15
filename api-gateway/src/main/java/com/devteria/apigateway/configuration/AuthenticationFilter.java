@@ -45,12 +45,11 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
         }
 
         String token = authHeader.getFirst().replace("Bearer", "");
-        log.info("Authentication token: " + token);
+        log.info("Authentication token: {}", token);
 
         // Verify token
-        identityService.introspect(token).subscribe(introspectResponseApiResponse -> {
-            log.info("Result: {}", introspectResponseApiResponse.getResult().isValid());
-        });
+        identityService.introspect(token).subscribe(introspectResponseApiResponse ->
+            log.info("Result: {}", introspectResponseApiResponse.getResult().isValid()));
 
         return identityService.introspect(token).flatMap(introspectResponseApiResponse -> {
             if (introspectResponseApiResponse.getResult().isValid()) {
@@ -61,6 +60,7 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
         }).onErrorResume(throwable -> unauthenticated(exchange.getResponse()));
     }
 
+    // the smaller the number, the higher the order
     @Override
     public int getOrder() {
         return -1;
