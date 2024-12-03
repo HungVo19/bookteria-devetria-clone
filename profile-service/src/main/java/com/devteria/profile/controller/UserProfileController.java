@@ -23,11 +23,6 @@ public class UserProfileController {
 
   UserProfileService userProfileService;
 
-//  @PostMapping("/")
-//  UserProfileResponse createProfile(@RequestBody ProfileCreationRequest request) {
-//    return userProfileService.createProfile(request);
-//  }
-
   @GetMapping
   List<UserProfileResponse> getAllUserProfiles() {
     return userProfileService.getAllUserProfiles();
